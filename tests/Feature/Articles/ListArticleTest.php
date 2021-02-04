@@ -85,6 +85,9 @@ class ListArticleTest extends TestCase
                         'self' => route('api.v1.articles.show', $articles[2])
                     ]
                 ]
+            ],
+            'links' => [
+                'self' => route('api.v1.articles.index')
             ]
         ]);
     }
