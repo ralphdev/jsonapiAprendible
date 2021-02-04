@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+
+use Illuminate\Support\Str;
 
 class Article extends Model
 {
@@ -33,5 +36,23 @@ class Article extends Model
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class);
+    }
+
+    public function scopeApplySorts(Builder $query, $sort)
+    {
+        //sort=-title,content
+        $sortFields = Str::of(request('sort'))->explode(',');
+
+        foreach ($sortFields as $sortField) {
+
+            $direction = 'asc';
+
+            if(Str::of($sortField)->startsWith('-')){
+                $direction = 'desc';
+                $sortField = Str::of($sortField)->substr(1);
+            }
+            $query->orderBy($sortField, $direction);
+        }
+
     }
 }
