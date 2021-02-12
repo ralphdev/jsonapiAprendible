@@ -85,4 +85,15 @@ class SortArticlesTest extends TestCase
 
 
     }
+
+    /** @test */
+    public function it_can_sort_articles_by_unknow_fields()
+    {
+        //$this->withoutExceptionHandling();
+
+        factory(Article::class)->times(3)->create();
+        $url = route('api.v1.articles.index').'?sort=unknow';
+
+        $this->getJson($url)->assertStatus(400);
+    }
 }

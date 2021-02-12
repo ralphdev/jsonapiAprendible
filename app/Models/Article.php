@@ -40,6 +40,7 @@ class Article extends Model
 
     public function scopeApplySorts(Builder $query, $sort)
     {
+        $allowedSorts = ['title,content'];
         //sort=-title,content
         $sortFields = Str::of(request('sort'))->explode(',');
 
@@ -51,6 +52,11 @@ class Article extends Model
                 $direction = 'desc';
                 $sortField = Str::of($sortField)->substr(1);
             }
+
+            if(! collect($allowedSorts)->contains($sortField)){
+                abort(400);
+            }
+
             $query->orderBy($sortField, $direction);
         }
 
